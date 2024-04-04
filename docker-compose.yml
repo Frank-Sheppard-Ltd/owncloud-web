@@ -70,10 +70,10 @@ services:
         OC10_IMAGE: ${OC10_IMAGE:-owncloud/server:latest}
     container_name: web_oc10
     ports:
-      - 8080:8080
+      - 8089:8080
     environment:
       OWNCLOUD_LOCKING_ENABLED: "false"
-      OWNCLOUD_TRUSTED_DOMAINS: "host.docker.internal"
+      OWNCLOUD_TRUSTED_DOMAINS: "host.docker.internal, localhost, uat.local"
       OWNCLOUD_CORS_ALLOWED_DOMAINS: http://host.docker.internal:8081
     volumes:
       - ${OC10_WEB_CONFIG:-./dev/docker/oc10.web.config.json}:/mnt/data/config/config.json
@@ -92,7 +92,8 @@ services:
       - ./dist/manifest.json:/mnt/data/apps/web/manifest.json
       - ./dist/oidc-callback.html:/mnt/data/apps/web/oidc-callback.html
       - ./dist/oidc-silent-redirect.html:/mnt/data/apps/web/oidc-silent-redirect.html
-
+      - ~/MyMedia:/MyMedia
+      - ~/Downloads:/MyDownloads
       # obsolete but used in 6.0 stable, keep for a while to make switching branches less annoying
       - ./dist/css:/mnt/data/apps/web/css
     extra_hosts:
@@ -108,7 +109,7 @@ services:
     container_name: web_selenium
     ports:
       - 4444:4444
-      - 5900:5900
+      - 5902:5900
     volumes:
       - /dev/shm:/dev/shm
       - uploads:/uploads:ro
